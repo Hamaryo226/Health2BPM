@@ -1,0 +1,467 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		05E739453BB438151FD9A442 /* SpotifyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 674604E89E9C58F1D07AE3C6 /* SpotifyService.swift */; };
+		08C66017D13009F0E03A4F9F /* Health2BPMWatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58D8766AA8454CF11E15EF00 /* Health2BPMWatchApp.swift */; };
+		13D3686031394F091B86FD06 /* SpotifyDTOs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51AD48DED3DE59D69B5B5085 /* SpotifyDTOs.swift */; };
+		349AFE5227495916846BCC53 /* Health2BPMApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 212D4B5423960CCE366449F3 /* Health2BPMApp.swift */; };
+		3A40F10B0D1A06290B7EF1B7 /* Health2BPMWatch Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = C6D300B69CDD829A98095145 /* Health2BPMWatch Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		522C2E49C7F8C328A517DBED /* SpotifyDTOs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51AD48DED3DE59D69B5B5085 /* SpotifyDTOs.swift */; };
+		74F9DEDFBCEAD964FDD15AC3 /* HeartRateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2715C3FECD22BBD51F53767A /* HeartRateManager.swift */; };
+		9525B981EF47839F98BDC770 /* WatchSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 103F215803FC837F869F670E /* WatchSessionManager.swift */; };
+		9C9D1837221AECA23EA72211 /* WatchContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C508649F8E9C76C882260551 /* WatchContentView.swift */; };
+		AD00E9BAFE22DACABB855CA4 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEE493230CD2C4099E77E53A /* Models.swift */; };
+		AEDB9954C4005481F474EE94 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD4558AB73DBB160A28D984E /* ContentView.swift */; };
+		B567AB2D2D7C13807DF22A8C /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEE493230CD2C4099E77E53A /* Models.swift */; };
+		BC5A7DC95FEE33C5526DFDC8 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7482F50F407066007E6A746B /* AppState.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		1D5D8DBC1D3E4DC36AB65206 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8703E0F9B3DD4020FF146DCE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 46948828BF3624C7FF49E12C;
+			remoteInfo = "Health2BPMWatch Watch App";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		6B1B9F55B49882E2D556C2DB /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				3A40F10B0D1A06290B7EF1B7 /* Health2BPMWatch Watch App.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		103F215803FC837F869F670E /* WatchSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSessionManager.swift; sourceTree = "<group>"; };
+		212D4B5423960CCE366449F3 /* Health2BPMApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Health2BPMApp.swift; sourceTree = "<group>"; };
+		2715C3FECD22BBD51F53767A /* HeartRateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartRateManager.swift; sourceTree = "<group>"; };
+		48D7EBF12D067DAD1C661D13 /* Health2BPM.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Health2BPM.entitlements; sourceTree = "<group>"; };
+		51AD48DED3DE59D69B5B5085 /* SpotifyDTOs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyDTOs.swift; sourceTree = "<group>"; };
+		58D8766AA8454CF11E15EF00 /* Health2BPMWatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Health2BPMWatchApp.swift; sourceTree = "<group>"; };
+		674604E89E9C58F1D07AE3C6 /* SpotifyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyService.swift; sourceTree = "<group>"; };
+		6E8360D0BD7CEBDCC50B128A /* Health2BPM.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Health2BPM.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		7482F50F407066007E6A746B /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		BD4558AB73DBB160A28D984E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		C508649F8E9C76C882260551 /* WatchContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchContentView.swift; sourceTree = "<group>"; };
+		C6D300B69CDD829A98095145 /* Health2BPMWatch Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Health2BPMWatch Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE460F0F2D8478C922691350 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		D426854F8EBA6BE67A9A5D7B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		DEE493230CD2C4099E77E53A /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		EA3B12D7CC76B69B76693953 /* Health2BPMWatch.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Health2BPMWatch.entitlements; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		13815FB11AA291F5073FA39B = {
+			isa = PBXGroup;
+			children = (
+				E87845FE93D0D3915D258E1C /* iOS */,
+				959F6922055793C01A0B5526 /* Shared */,
+				EB057CEBAA8783A14D3F1EE7 /* Watch */,
+				F90D9877494D1EDE3261399C /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		959F6922055793C01A0B5526 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				DEE493230CD2C4099E77E53A /* Models.swift */,
+				51AD48DED3DE59D69B5B5085 /* SpotifyDTOs.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		E87845FE93D0D3915D258E1C /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				7482F50F407066007E6A746B /* AppState.swift */,
+				BD4558AB73DBB160A28D984E /* ContentView.swift */,
+				48D7EBF12D067DAD1C661D13 /* Health2BPM.entitlements */,
+				212D4B5423960CCE366449F3 /* Health2BPMApp.swift */,
+				D426854F8EBA6BE67A9A5D7B /* Info.plist */,
+				674604E89E9C58F1D07AE3C6 /* SpotifyService.swift */,
+				103F215803FC837F869F670E /* WatchSessionManager.swift */,
+			);
+			path = iOS;
+			sourceTree = "<group>";
+		};
+		EB057CEBAA8783A14D3F1EE7 /* Watch */ = {
+			isa = PBXGroup;
+			children = (
+				EA3B12D7CC76B69B76693953 /* Health2BPMWatch.entitlements */,
+				58D8766AA8454CF11E15EF00 /* Health2BPMWatchApp.swift */,
+				2715C3FECD22BBD51F53767A /* HeartRateManager.swift */,
+				CE460F0F2D8478C922691350 /* Info.plist */,
+				C508649F8E9C76C882260551 /* WatchContentView.swift */,
+			);
+			path = Watch;
+			sourceTree = "<group>";
+		};
+		F90D9877494D1EDE3261399C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6E8360D0BD7CEBDCC50B128A /* Health2BPM.app */,
+				C6D300B69CDD829A98095145 /* Health2BPMWatch Watch App.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		46948828BF3624C7FF49E12C /* Health2BPMWatch Watch App */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BA7FAA78F915B1F26A20675C /* Build configuration list for PBXNativeTarget "Health2BPMWatch Watch App" */;
+			buildPhases = (
+				0EE0B79D5A11CFAB0FEFE73C /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Health2BPMWatch Watch App";
+			packageProductDependencies = (
+			);
+			productName = "Health2BPMWatch Watch App";
+			productReference = C6D300B69CDD829A98095145 /* Health2BPMWatch Watch App.app */;
+			productType = "com.apple.product-type.application";
+		};
+		DCF79C0BB3E5CFC5BE01D7DC /* Health2BPM */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5EEA6D8F73408A7B0E7F6A7A /* Build configuration list for PBXNativeTarget "Health2BPM" */;
+			buildPhases = (
+				AE0E94CF6ED5817C57B9E99B /* Sources */,
+				6B1B9F55B49882E2D556C2DB /* Embed Watch Content */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				90A2DDB10C3144DF2624C7AD /* PBXTargetDependency */,
+			);
+			name = Health2BPM;
+			packageProductDependencies = (
+			);
+			productName = Health2BPM;
+			productReference = 6E8360D0BD7CEBDCC50B128A /* Health2BPM.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		8703E0F9B3DD4020FF146DCE /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					46948828BF3624C7FF49E12C = {
+						DevelopmentTeam = A9K5YN93F2;
+						ProvisioningStyle = Automatic;
+					};
+					DCF79C0BB3E5CFC5BE01D7DC = {
+						DevelopmentTeam = A9K5YN93F2;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 21E1E71E750AF94023B6C38C /* Build configuration list for PBXProject "Health2BPM" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 13815FB11AA291F5073FA39B;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = F90D9877494D1EDE3261399C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				DCF79C0BB3E5CFC5BE01D7DC /* Health2BPM */,
+				46948828BF3624C7FF49E12C /* Health2BPMWatch Watch App */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		0EE0B79D5A11CFAB0FEFE73C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				08C66017D13009F0E03A4F9F /* Health2BPMWatchApp.swift in Sources */,
+				74F9DEDFBCEAD964FDD15AC3 /* HeartRateManager.swift in Sources */,
+				B567AB2D2D7C13807DF22A8C /* Models.swift in Sources */,
+				13D3686031394F091B86FD06 /* SpotifyDTOs.swift in Sources */,
+				9C9D1837221AECA23EA72211 /* WatchContentView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AE0E94CF6ED5817C57B9E99B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BC5A7DC95FEE33C5526DFDC8 /* AppState.swift in Sources */,
+				AEDB9954C4005481F474EE94 /* ContentView.swift in Sources */,
+				349AFE5227495916846BCC53 /* Health2BPMApp.swift in Sources */,
+				AD00E9BAFE22DACABB855CA4 /* Models.swift in Sources */,
+				522C2E49C7F8C328A517DBED /* SpotifyDTOs.swift in Sources */,
+				05E739453BB438151FD9A442 /* SpotifyService.swift in Sources */,
+				9525B981EF47839F98BDC770 /* WatchSessionManager.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		90A2DDB10C3144DF2624C7AD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 46948828BF3624C7FF49E12C /* Health2BPMWatch Watch App */;
+			targetProxy = 1D5D8DBC1D3E4DC36AB65206 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		4A5AB21BE39828126B6433EA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
+			};
+			name = Release;
+		};
+		644DA98C0D6BA60676459DD5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Watch/Health2BPMWatch.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = A9K5YN93F2;
+				INFOPLIST_FILE = Watch/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Health2BPM;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.health2bpm.watchkitapp;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+			};
+			name = Debug;
+		};
+		853AFF584BA9C099D7E16836 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
+			};
+			name = Debug;
+		};
+		BC9D85B57D7F1F72FBA39951 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Watch/Health2BPMWatch.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = A9K5YN93F2;
+				INFOPLIST_FILE = Watch/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Health2BPM;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.health2bpm.watchkitapp;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+			};
+			name = Release;
+		};
+		D694B57EB64D16B56F8AB33E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = iOS/Health2BPM.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = A9K5YN93F2;
+				INFOPLIST_FILE = iOS/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Health2BPM;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.health2bpm;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		D94EA4454FA09962EC6B473F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = iOS/Health2BPM.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = A9K5YN93F2;
+				INFOPLIST_FILE = iOS/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Health2BPM;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.health2bpm;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		21E1E71E750AF94023B6C38C /* Build configuration list for PBXProject "Health2BPM" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				853AFF584BA9C099D7E16836 /* Debug */,
+				4A5AB21BE39828126B6433EA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		5EEA6D8F73408A7B0E7F6A7A /* Build configuration list for PBXNativeTarget "Health2BPM" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D94EA4454FA09962EC6B473F /* Debug */,
+				D694B57EB64D16B56F8AB33E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		BA7FAA78F915B1F26A20675C /* Build configuration list for PBXNativeTarget "Health2BPMWatch Watch App" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				644DA98C0D6BA60676459DD5 /* Debug */,
+				BC9D85B57D7F1F72FBA39951 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 8703E0F9B3DD4020FF146DCE /* Project object */;
+}
