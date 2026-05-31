@@ -28,6 +28,7 @@ final class HeartRateManager: NSObject, ObservableObject {
             DispatchQueue.main.async {
                 guard let self else { return }
                 if success {
+                    self.currentBPM = nil
                     self.startWorkoutSession()
                     self.startHeartRateQuery()
                     self.isRunning = true
@@ -40,6 +41,10 @@ final class HeartRateManager: NSObject, ObservableObject {
     }
 
     func stop() {
+        stop(status: "停止しました")
+    }
+
+    private func stop(status: String) {
         if let query {
             healthStore.stop(query)
         }
@@ -47,7 +52,7 @@ final class HeartRateManager: NSObject, ObservableObject {
         query = nil
         workoutSession = nil
         isRunning = false
-        status = "停止しました"
+        self.status = status
     }
 
     private func startWorkoutSession() {
@@ -93,8 +98,8 @@ final class HeartRateManager: NSObject, ObservableObject {
             let unit = HKUnit.count().unitDivided(by: .minute())
             let bpm = Int(sample.quantity.doubleValue(for: unit).rounded())
             self.currentBPM = bpm
-            self.status = "iPhoneへ送信しました"
             self.sendToPhone(bpm: bpm)
+            self.stop(status: "測定完了")
         }
     }
 
