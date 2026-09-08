@@ -20,6 +20,7 @@ final class AppState: ObservableObject {
     @Published var tracks: [RecommendedTrack] = []
     @Published var currentTrackIndex = 0
     @Published var isLoading = false
+    @Published var isPlaying = false
 
     let spotify = SpotifyService()
     private let watchSession = WatchSessionManager()
@@ -47,6 +48,9 @@ final class AppState: ObservableObject {
         guard tracks.indices.contains(currentTrackIndex) else { return nil }
         return tracks[currentTrackIndex]
     }
+
+    var canGoBack: Bool { currentTrackIndex > 0 && currentTrack != nil }
+    var canGoForward: Bool { currentTrackIndex + 1 < tracks.count }
 
     func selectMood(_ mood: Mood) {
         selectedMood = mood
@@ -105,38 +109,63 @@ final class AppState: ObservableObject {
     }
 
     func fetchTracks() async {
-        guard let mood = selectedMood, let bpm = latestBPM else { return }
+        guard !isLoading else { return }
+        guard let mood = selectedMood, let bpm = latestBPM else {
+            statusMessage = "ムードを選び、Apple Watchで心拍数を取得してください"
+            return
+        }
+        let requestedMarket = market
         isLoading = true
+        tracks = []
+        currentTrackIndex = 0
+        statusMessage = "楽曲を取得しています"
+        step = .suggestions
         defer { isLoading = false }
 
         do {
-            tracks = try await spotify.recommendations(mood: mood, bpm: bpm, market: market)
+            let fetchedTracks = try await spotify.recommendations(mood: mood, bpm: bpm, market: requestedMarket)
+            guard selectedMood == mood, market == requestedMarket else {
+                statusMessage = "検索条件が変わりました。もう一度曲を取得してください"
+                return
+            }
+            tracks = fetchedTracks
             currentTrackIndex = 0
             step = .suggestions
-            statusMessage = "\(tracks.count)曲を提案しました"
+            statusMessage = tracks.isEmpty
+                ? "条件に合う曲が見つかりませんでした。ムードを変えて再取得してください"
+                : "\(tracks.count)曲を提案しました（\(mood.title)・\(bpm) BPM）"
         } catch {
             statusMessage = "楽曲取得に失敗しました: \(error.localizedDescription)"
         }
     }
 
     func playCurrentTrack() {
-        guard let currentTrack else { return }
+        guard !isPlaying, let currentTrack else { return }
+        isPlaying = true
         Task {
+            defer { isPlaying = false }
             do {
                 try await spotify.play(trackURI: currentTrack.uri)
                 statusMessage = "Spotifyで再生を開始しました"
             } catch {
-                await UIApplication.shared.open(currentTrack.spotifyURL)
-                statusMessage = "Spotifyアプリで開きました"
+                let opened = await UIApplication.shared.open(currentTrack.spotifyURL)
+                statusMessage = opened
+                    ? "曲のリンクを開きました。Spotifyで再生してください"
+                    : "曲を開けませんでした。Spotifyのインストールと通信状態を確認してください"
             }
         }
+    }
+
+    func previousTrack() {
+        guard canGoBack else { return }
+        currentTrackIndex -= 1
     }
 
     func skipTrack() {
         if currentTrackIndex < tracks.count - 1 {
             currentTrackIndex += 1
         } else {
-            statusMessage = "10曲すべて確認しました"
+            statusMessage = "\(tracks.count)曲すべて確認しました"
         }
     }
 }

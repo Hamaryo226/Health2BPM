@@ -174,7 +174,10 @@ private struct SuggestionsView: View {
         ScreenScroll {
             StatusPill(message: appState.statusMessage)
 
-            if let track = appState.currentTrack {
+            if appState.isLoading {
+                ProgressView("楽曲を取得しています…")
+                    .frame(maxWidth: .infinity, minHeight: 320)
+            } else if let track = appState.currentTrack {
                 AsyncImage(url: track.artworkURL) { image in
                     image.resizable().scaledToFill()
                 } placeholder: {
@@ -196,7 +199,7 @@ private struct SuggestionsView: View {
                     Text(track.artists)
                         .font(.headline)
                         .foregroundStyle(.secondary)
-                    Text("\(track.albumName) · \(track.durationSeconds)秒")
+                    Text("\(track.albumName) · \(track.durationSeconds / 60):\(String(format: "%02d", track.durationSeconds % 60))")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                     Text("\(min(appState.currentTrackIndex + 1, appState.tracks.count)) / \(appState.tracks.count)")
@@ -207,22 +210,36 @@ private struct SuggestionsView: View {
                 .padding(18)
                 .background(.background, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
 
+                Button(appState.isPlaying ? "再生処理中…" : "再生する") {
+                    appState.playCurrentTrack()
+                }
+                .buttonStyle(PrimaryButtonStyle())
+                .disabled(appState.isPlaying)
+
                 HStack(spacing: 10) {
-                    Button("再生する") {
-                        appState.playCurrentTrack()
+                    Button("前の曲") {
+                        appState.previousTrack()
                     }
-                    .buttonStyle(PrimaryButtonStyle())
+                    .buttonStyle(SecondaryButtonStyle())
+                    .disabled(!appState.canGoBack)
 
                     Button("次の曲") {
                         appState.skipTrack()
                     }
                     .buttonStyle(SecondaryButtonStyle())
+                    .disabled(!appState.canGoForward)
                 }
             } else {
-                ContentUnavailableView("候補がありません", systemImage: "music.note", description: Text("Spotifyに接続すると、ここに提案曲が表示されます。"))
+                ContentUnavailableView("候補がありません", systemImage: "music.note", description: Text("Spotifyに接続すると、ここに提案曲が表示されます。取得できない場合は、状態メッセージを確認して再取得してください。"))
                     .frame(maxWidth: .infinity, minHeight: 320)
                     .background(.background, in: RoundedRectangle(cornerRadius: 22, style: .continuous))
             }
+
+            Button("曲を再取得") {
+                Task { await appState.fetchTracks() }
+            }
+            .buttonStyle(SecondaryButtonStyle())
+            .disabled(appState.isLoading || appState.selectedMood == nil || appState.latestBPM == nil)
         }
     }
 }
@@ -314,8 +331,7 @@ private struct StatusPill: View {
         Label(message, systemImage: "waveform.path.ecg")
             .font(.caption.weight(.semibold))
             .foregroundStyle(.secondary)
-            .lineLimit(2)
-            .minimumScaleFactor(0.85)
+            .fixedSize(horizontal: false, vertical: true)
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 12)
             .padding(.vertical, 10)
