@@ -158,11 +158,20 @@ private struct SpotifyConnectView: View {
             }
             .buttonStyle(SecondaryButtonStyle())
 
-            Button("Spotifyにログインして10曲提案") {
+            Button(appState.isAuthenticating ? "認証中…" : "Spotifyにログイン") {
                 appState.loginToSpotify()
             }
             .buttonStyle(PrimaryButtonStyle())
-            .disabled(appState.isLoading)
+            .disabled(appState.isLoading || appState.isAuthenticating || appState.isPlaying)
+
+            if appState.isSpotifyConnected {
+                Label("Spotifyに接続済み", systemImage: "checkmark.circle.fill")
+                Button("この条件で曲を取得") {
+                    Task { await appState.fetchTracks() }
+                }
+                .buttonStyle(PrimaryButtonStyle())
+                .disabled(appState.isLoading || appState.isAuthenticating)
+            }
         }
     }
 }
@@ -266,6 +275,11 @@ private struct SpotifySettingsView: View {
             }
 
             Section {
+                Button("Spotifyの接続を解除", role: .destructive) {
+                    appState.disconnectSpotify()
+                }
+                .disabled(!appState.isSpotifyConnected && !appState.isAuthenticating)
+
                 Button {
                     UIPasteboard.general.string = appState.redirectURI
                     appState.statusMessage = "Redirect URIをコピーしました"
