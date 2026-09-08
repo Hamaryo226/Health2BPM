@@ -156,9 +156,9 @@ final class AppState: ObservableObject {
             } catch is CancellationError {
                 // A disconnect or new login superseded this request.
             } catch {
+                spotify.cancelLogin()
                 isAuthenticating = false
                 statusMessage = "Spotify認証に失敗しました: \(error.localizedDescription)"
-                do { try spotify.disconnect() } catch { statusMessage = error.localizedDescription }
             }
         }
     }
