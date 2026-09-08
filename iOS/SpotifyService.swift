@@ -14,7 +14,7 @@ final class SpotifyService: NSObject {
     private var credentials: SpotifyCredentials?
     private var pendingLogin: LoginAttempt?
     private var webSession: ASWebAuthenticationSession?
-    private var presentationWindow: UIWindow?
+    nonisolated(unsafe) private var presentationWindow: UIWindow?
     private var refreshTask: Task<String, Error>?
     private var generation = UUID()
     var onCallbackURL: ((URL) -> Void)?
@@ -37,6 +37,13 @@ final class SpotifyService: NSObject {
         }
         credentials = saved
         onConnectionChanged?(true)
+    }
+
+    func cancelLogin() {
+        pendingLogin = nil
+        webSession?.cancel()
+        webSession = nil
+        presentationWindow = nil
     }
 
     func disconnect() throws {
@@ -65,7 +72,6 @@ final class SpotifyService: NSObject {
             .flatMap(\.windows).first(where: \.isKeyWindow) else {
             throw SpotifyError.loginUnavailable
         }
-        try disconnect()
         let attempt = LoginAttempt(clientID: clientID, redirectURI: redirectURI,
                                    verifier: Self.randomString(length: 64), state: Self.randomString(length: 32))
         pendingLogin = attempt
@@ -214,7 +220,7 @@ final class SpotifyService: NSObject {
         }
         if let refreshTask { return try await refreshTask.value }
         let expectedGeneration = generation
-        let task = Task { @MainActor () throws -> String in
+        let task = Task<String, Error> { @MainActor in
             do {
                 let response: SpotifyTokenResponse = try await self.decoded(self.tokenRequest([
                     "grant_type": "refresh_token", "refresh_token": saved.refreshToken,
@@ -304,20 +310,23 @@ final class SpotifyService: NSObject {
 }
 
 extension SpotifyService: ASWebAuthenticationPresentationContextProviding {
-    func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
+    nonisolated func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
         // Retained before start(), and released only after the browser has finished.
-        presentationWindow!
+        guard let presentationWindow else {
+            preconditionFailure("Spotify authentication started without an active window")
+        }
+        return presentationWindow
     }
 }
 
-private struct LoginAttempt {
+private struct LoginAttempt: Sendable {
     let clientID: String
     let redirectURI: String
     let verifier: String
     let state: String
 }
 
-struct SpotifyCredentials: Codable {
+struct SpotifyCredentials: Codable, Sendable {
     let accessToken: String
     let refreshToken: String
     let expiresAt: Date
@@ -366,7 +375,7 @@ struct KeychainSpotifyTokenStore: SpotifyTokenStore {
     }
 }
 
-struct SpotifyHTTPError: LocalizedError {
+struct SpotifyHTTPError: LocalizedError, Sendable {
     let status: Int
     let oauthCode: String?
     let retryAfter: String?
@@ -400,7 +409,7 @@ struct SpotifyHTTPError: LocalizedError {
     }
 }
 
-enum SpotifyError: LocalizedError {
+enum SpotifyError: LocalizedError, Sendable {
     case missingAuthorizationCode, notAuthenticated, seedTrackNotFound, invalidCallback
     case loginUnavailable, loginCancelled, authorizationDenied, invalidResponse
     case keychain(OSStatus)
