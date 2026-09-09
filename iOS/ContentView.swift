@@ -178,6 +178,7 @@ private struct SpotifyConnectView: View {
 
 private struct SuggestionsView: View {
     @EnvironmentObject private var appState: AppState
+    @State private var showsPlaylist = false
 
     var body: some View {
         ScreenScroll {
@@ -219,6 +220,22 @@ private struct SuggestionsView: View {
                 .padding(18)
                 .background(.background, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
 
+                Button {
+                    Task { await appState.saveCurrentFavorite() }
+                } label: {
+                    Label(appState.favoriteURIs.contains(track.uri) ? "お気に入りに追加済み" : "お気に入りに追加",
+                          systemImage: appState.favoriteURIs.contains(track.uri) ? "heart.fill" : "heart")
+                }
+                .buttonStyle(SecondaryButtonStyle())
+                .disabled(appState.isSavingFavorite || appState.isAuthenticating || !appState.isSpotifyConnected)
+
+                Button("プレイリストを作成・保存") {
+                    appState.beginPlaylist()
+                    showsPlaylist = true
+                }
+                .buttonStyle(SecondaryButtonStyle())
+                .disabled(appState.isAuthenticating || !appState.isSpotifyConnected)
+
                 Button(appState.isPlaying ? "再生処理中…" : "再生する") {
                     appState.playCurrentTrack()
                 }
@@ -250,6 +267,52 @@ private struct SuggestionsView: View {
             .buttonStyle(SecondaryButtonStyle())
             .disabled(appState.isLoading || appState.selectedMood == nil || appState.latestBPM == nil)
         }
+        .sheet(isPresented: $showsPlaylist) {
+            PlaylistSaveView()
+        }
+    }
+}
+
+private struct PlaylistSaveView: View {
+    @EnvironmentObject private var appState: AppState
+    @Environment(\.dismiss) private var dismiss
+    @State private var name = "Health2BPM"
+
+    var body: some View {
+        NavigationStack {
+            Form {
+                Section {
+                    TextField("プレイリスト名", text: $name)
+                        .disabled(appState.isSavingPlaylist || appState.createdPlaylist != nil)
+                    Text("\(appState.playlistTrackCount)曲を非公開で保存します")
+                }
+                Section {
+                    Button(appState.isSavingPlaylist ? "保存中…" : (appState.createdPlaylist == nil ? "Spotifyに保存" : "曲の保存を再試行")) {
+                        Task { await appState.savePlaylist(name: name) }
+                    }
+                    .disabled(appState.isSavingPlaylist || appState.playlistSaved
+                              || !appState.isSpotifyConnected || appState.playlistTrackCount == 0
+                              || name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                    if !appState.playlistMessage.isEmpty {
+                        Text(appState.playlistMessage)
+                    }
+                    if let url = appState.createdPlaylist?.externalURLs["spotify"] {
+                        Link("Spotifyでプレイリストを開く", destination: url)
+                    }
+                } footer: {
+                    Text("初回はSpotifyに再接続して保存権限を許可してください。")
+                }
+            }
+            .navigationTitle("プレイリストを保存")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("閉じる") { dismiss() }
+                        .disabled(appState.isSavingPlaylist)
+                }
+            }
+            .interactiveDismissDisabled(appState.isSavingPlaylist)
+        }
     }
 }
 
@@ -275,6 +338,11 @@ private struct SpotifySettingsView: View {
             }
 
             Section {
+                Button("Spotifyに再接続（保存権限を許可）") {
+                    appState.loginToSpotify()
+                }
+                .disabled(appState.isAuthenticating || appState.isSavingFavorite || appState.isSavingPlaylist)
+
                 Button("Spotifyの接続を解除", role: .destructive) {
                     appState.disconnectSpotify()
                 }

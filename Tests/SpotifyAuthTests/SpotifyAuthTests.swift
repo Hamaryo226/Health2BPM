@@ -75,6 +75,38 @@ final class SpotifyAuthTests: XCTestCase {
         XCTAssertFalse(error.localizedDescription.contains("secret-token"))
     }
 
+    func testLibraryAndPlaylistRequestsRefreshExpiredCredentials() async throws {
+        let store = MemoryTokenStore()
+        store.value = credentials()
+        let config = URLSessionConfiguration.ephemeral
+        config.protocolClasses = [SpotifyStubProtocol.self]
+        let service = SpotifyService(session: URLSession(configuration: config), tokenStore: store)
+        try service.restore(clientID: "client", redirectURI: "health2bpm://spotify-callback")
+        try await service.saveFavorite(trackURI: "spotify:track:test")
+        let playlist = try await service.createPlaylist(name: "  Test  ")
+        XCTAssertEqual(playlist.id, "created")
+        try await service.savePlaylistTracks(playlistID: playlist.id, uris: ["spotify:track:test"])
+        // Retrying a replacement must target the same playlist.
+        try await service.savePlaylistTracks(playlistID: playlist.id, uris: ["spotify:track:test"])
+        XCTAssertEqual(store.value?.accessToken, "new-access")
+    }
+
+    func testEmptyPlaylistInputIsRejectedBeforeAuthentication() async {
+        let service = SpotifyService(tokenStore: MemoryTokenStore())
+        do {
+            _ = try await service.createPlaylist(name: " \n ")
+            XCTFail("Expected validation failure")
+        } catch {
+            guard case SpotifyError.invalidPlaylist = error else { return XCTFail("\(error)") }
+        }
+        do {
+            try await service.savePlaylistTracks(playlistID: "created", uris: [])
+            XCTFail("Expected validation failure")
+        } catch {
+            guard case SpotifyError.invalidPlaylist = error else { return XCTFail("\(error)") }
+        }
+    }
+
     private func credentials() -> SpotifyCredentials {
         SpotifyCredentials(accessToken: "expired", refreshToken: "original-refresh", expiresAt: .distantPast,
                            clientID: "client", redirectURI: "health2bpm://spotify-callback")
@@ -95,11 +127,44 @@ private final class SpotifyStubProtocol: URLProtocol {
         let isToken = request.url?.path == "/api/token"
         let authorized = request.value(forHTTPHeaderField: "Authorization") == "Bearer new-access"
         let status = isToken ? 200 : (authorized ? 204 : 401)
-        let body = isToken ? "{\"access_token\":\"new-access\",\"expires_in\":3600}" : ""
+        var body = isToken ? "{\"access_token\":\"new-access\",\"expires_in\":3600}" : ""
+        if authorized {
+            switch request.url?.path {
+            case "/v1/me/library":
+                XCTAssertEqual(request.httpMethod, "PUT")
+                XCTAssertEqual(URLComponents(url: request.url!, resolvingAgainstBaseURL: false)?
+                    .queryItems?.first(where: { $0.name == "uris" })?.value, "spotify:track:test")
+            case "/v1/me/playlists":
+                XCTAssertEqual(request.httpMethod, "POST")
+                let json = requestJSON()
+                XCTAssertEqual(json?["name"] as? String, "Test")
+                XCTAssertEqual(json?["public"] as? Bool, false)
+                body = "{\"id\":\"created\",\"external_urls\":{\"spotify\":\"https://open.spotify.com/playlist/created\"}}"
+            case "/v1/playlists/created/items":
+                XCTAssertEqual(request.httpMethod, "PUT")
+                XCTAssertEqual(requestJSON()?["uris"] as? [String], ["spotify:track:test"])
+            default: break
+            }
+        }
         let response = HTTPURLResponse(url: request.url!, statusCode: status, httpVersion: nil, headerFields: nil)!
         client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .notAllowed)
         client?.urlProtocol(self, didLoad: Data(body.utf8))
         client?.urlProtocolDidFinishLoading(self)
     }
     override func stopLoading() {}
+
+    private func requestJSON() -> [String: Any]? {
+        var data = request.httpBody ?? Data()
+        if data.isEmpty, let stream = request.httpBodyStream {
+            stream.open()
+            defer { stream.close() }
+            var buffer = [UInt8](repeating: 0, count: 1024)
+            while true {
+                let count = stream.read(&buffer, maxLength: buffer.count)
+                if count <= 0 { break }
+                data.append(contentsOf: buffer.prefix(count))
+            }
+        }
+        return (try? JSONSerialization.jsonObject(with: data)) as? [String: Any]
+    }
 }
