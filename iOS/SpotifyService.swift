@@ -81,7 +81,7 @@ final class SpotifyService: NSObject {
             URLQueryItem(name: "response_type", value: "code"),
             URLQueryItem(name: "client_id", value: clientID),
             URLQueryItem(name: "redirect_uri", value: redirectURI),
-            URLQueryItem(name: "scope", value: "user-read-playback-state user-modify-playback-state"),
+            URLQueryItem(name: "scope", value: "user-read-playback-state user-modify-playback-state user-library-modify playlist-modify-private"),
             URLQueryItem(name: "state", value: attempt.state),
             URLQueryItem(name: "code_challenge_method", value: "S256"),
             URLQueryItem(name: "code_challenge", value: Self.codeChallenge(for: attempt.verifier)),
@@ -170,6 +170,37 @@ final class SpotifyService: NSObject {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpBody = try JSONSerialization.data(withJSONObject: ["uris": [trackURI]])
         _ = try await authorizedData(request)
+    }
+
+    func saveFavorite(trackURI: String) async throws {
+        var components = URLComponents(url: apiURL(path: "/me/library"), resolvingAgainstBaseURL: false)!
+        components.queryItems = [URLQueryItem(name: "uris", value: trackURI)]
+        var request = URLRequest(url: components.url!)
+        request.httpMethod = "PUT"
+        _ = try await authorizedData(request)
+    }
+
+    func createPlaylist(name: String) async throws -> SpotifyCreatedPlaylist {
+        let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { throw SpotifyError.invalidPlaylist }
+        let data = try await writeJSON(path: "/me/playlists", method: "POST",
+                                      body: ["name": trimmed, "public": false])
+        return try JSONDecoder().decode(SpotifyCreatedPlaylist.self, from: data)
+    }
+
+    // Only used for a newly created playlist owned by this save operation.
+    // Replacing its items makes retries safe after an ambiguous network failure.
+    func savePlaylistTracks(playlistID: String, uris: [String]) async throws {
+        guard !uris.isEmpty, uris.count <= 100 else { throw SpotifyError.invalidPlaylist }
+        _ = try await writeJSON(path: "/playlists/\(playlistID)/items", method: "PUT", body: ["uris": uris])
+    }
+
+    private func writeJSON(path: String, method: String, body: [String: Any]) async throws -> Data {
+        var request = URLRequest(url: apiURL(path: path))
+        request.httpMethod = method
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = try JSONSerialization.data(withJSONObject: body)
+        return try await authorizedData(request)
     }
 
     private func seedTrackID(query: String, market: String) async throws -> String {
@@ -413,9 +444,11 @@ enum SpotifyError: LocalizedError, Sendable {
     case missingAuthorizationCode, notAuthenticated, seedTrackNotFound, invalidCallback
     case loginUnavailable, loginCancelled, authorizationDenied, invalidResponse
     case keychain(OSStatus)
+    case invalidPlaylist
 
     var errorDescription: String? {
         switch self {
+        case .invalidPlaylist: "プレイリスト名と1〜100曲の楽曲を指定してください"
         case .missingAuthorizationCode: "認証コードが見つかりません"
         case .notAuthenticated: "Spotifyに再ログインしてください"
         case .seedTrackNotFound: "ムードに合う曲が見つかりません"

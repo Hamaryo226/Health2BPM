@@ -21,6 +21,13 @@ final class AppState: ObservableObject {
     @Published var currentTrackIndex = 0
     @Published var isLoading = false
     @Published var isPlaying = false
+    @Published var isSavingFavorite = false
+    @Published var favoriteURIs: Set<String> = []
+    @Published var isSavingPlaylist = false
+    @Published var playlistMessage = ""
+    @Published var createdPlaylist: SpotifyCreatedPlaylist?
+    @Published var playlistSaved = false
+    private var playlistURIs: [String] = []
 
     let spotify = SpotifyService()
     private let watchSession = WatchSessionManager()
@@ -46,7 +53,14 @@ final class AppState: ObservableObject {
         }
         spotify.onConnectionChanged = { [weak self] connected in
             self?.isSpotifyConnected = connected
-            if !connected { self?.tracks = [] }
+            if !connected {
+                self?.tracks = []
+                self?.favoriteURIs = []
+                self?.createdPlaylist = nil
+                self?.playlistURIs = []
+                self?.playlistSaved = false
+                self?.playlistMessage = ""
+            }
         }
         spotify.onLoginError = { [weak self] error in
             self?.isAuthenticating = false
@@ -84,7 +98,7 @@ final class AppState: ObservableObject {
     }
 
     func loginToSpotify() {
-        guard !isAuthenticating, !isLoading, !isPlaying else { return }
+        guard !isAuthenticating, !isLoading, !isPlaying, !isSavingFavorite, !isSavingPlaylist else { return }
         guard saveSpotifySettings() else { return }
         guard !clientID.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
             statusMessage = "Spotify Client IDを入力してください"
@@ -221,6 +235,68 @@ final class AppState: ObservableObject {
                     : "曲を開けませんでした。Spotifyのインストールと通信状態を確認してください"
             }
         }
+    }
+
+    func saveCurrentFavorite() async {
+        guard !isSavingFavorite, !isAuthenticating, isSpotifyConnected, let track = currentTrack else { return }
+        isSavingFavorite = true
+        defer { isSavingFavorite = false }
+        do {
+            try await spotify.saveFavorite(trackURI: track.uri)
+            favoriteURIs.insert(track.uri)
+            statusMessage = "「\(track.name)」をSpotifyのお気に入りに追加しました"
+        } catch is CancellationError {
+            return
+        } catch {
+            statusMessage = saveErrorMessage(error)
+        }
+    }
+
+    func beginPlaylist() {
+        guard !isSavingPlaylist else { return }
+        // Keep an unfinished save so retry does not create another playlist.
+        if createdPlaylist != nil && !playlistSaved { return }
+        createdPlaylist = nil
+        playlistSaved = false
+        playlistMessage = ""
+        var seen: Set<String> = []
+        playlistURIs = tracks.map(\.uri).filter { seen.insert($0).inserted }
+    }
+
+    var playlistTrackCount: Int { playlistURIs.count }
+
+    func savePlaylist(name: String) async {
+        guard !isSavingPlaylist, !playlistSaved, !isAuthenticating, isSpotifyConnected else { return }
+        guard !playlistURIs.isEmpty, playlistURIs.count <= 100 else {
+            playlistMessage = "保存する曲がありません。提案曲を取得してください"
+            return
+        }
+        isSavingPlaylist = true
+        defer { isSavingPlaylist = false }
+        do {
+            if createdPlaylist == nil {
+                createdPlaylist = try await spotify.createPlaylist(name: name)
+            }
+            guard let playlist = createdPlaylist else { return }
+            try await spotify.savePlaylistTracks(playlistID: playlist.id, uris: playlistURIs)
+            playlistSaved = true
+            playlistMessage = "\(playlistURIs.count)曲を非公開プレイリストに保存しました"
+            statusMessage = playlistMessage
+        } catch is CancellationError {
+            return
+        } catch {
+            let prefix = createdPlaylist == nil
+                ? "作成を確認できませんでした。通信エラーの場合はSpotifyに同名のリストがないか確認してください。"
+                : "プレイリストは作成済みですが、曲の保存を確認できませんでした。同じリストへ再試行できます。"
+            playlistMessage = prefix + "\n" + saveErrorMessage(error)
+        }
+    }
+
+    private func saveErrorMessage(_ error: Error) -> String {
+        if let http = error as? SpotifyHTTPError, http.status == 403 {
+            return "保存権限を確認してください。Spotifyに再接続して追加権限を許可してください（HTTP 403）"
+        }
+        return error.localizedDescription
     }
 
     func previousTrack() {

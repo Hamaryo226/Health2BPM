@@ -1,5 +1,15 @@
 import Foundation
 
+struct SpotifyCreatedPlaylist: Decodable {
+    let id: String
+    let externalURLs: [String: URL]
+
+    enum CodingKeys: String, CodingKey {
+        case id
+        case externalURLs = "external_urls"
+    }
+}
+
 struct SpotifyTokenResponse: Decodable {
     let accessToken: String
     let refreshToken: String?
