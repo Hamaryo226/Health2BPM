@@ -318,6 +318,7 @@ private struct PlaylistSaveView: View {
 
 private struct SpotifySettingsView: View {
     @EnvironmentObject private var appState: AppState
+    @State private var showsWelcome = false
 
     var body: some View {
         Form {
@@ -363,6 +364,15 @@ private struct SpotifySettingsView: View {
         }
         .scrollContentBackground(.hidden)
         .background(Color(.systemGroupedBackground).ignoresSafeArea())
+        .safeAreaInset(edge: .bottom) {
+            Button("使い方を見る") { showsWelcome = true }
+                .padding()
+                .frame(maxWidth: .infinity)
+                .background(.background)
+        }
+        .fullScreenCover(isPresented: $showsWelcome) {
+            WelcomeView { showsWelcome = false }
+        }
         .navigationTitle("Spotify API設定")
         .navigationBarTitleDisplayMode(.inline)
     }

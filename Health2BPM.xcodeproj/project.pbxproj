@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F01200000000000000000001 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F01200000000000000000002 /* WelcomeView.swift */; };
+		F01200000000000000000003 /* WelcomeAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F01200000000000000000004 /* WelcomeAssets.xcassets */; };
 		05E739453BB438151FD9A442 /* SpotifyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 674604E89E9C58F1D07AE3C6 /* SpotifyService.swift */; };
 		08C66017D13009F0E03A4F9F /* Health2BPMWatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58D8766AA8454CF11E15EF00 /* Health2BPMWatchApp.swift */; };
 		13D3686031394F091B86FD06 /* SpotifyDTOs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51AD48DED3DE59D69B5B5085 /* SpotifyDTOs.swift */; };
@@ -47,6 +49,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		F01200000000000000000002 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
+		F01200000000000000000004 /* WelcomeAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = WelcomeAssets.xcassets; sourceTree = "<group>"; };
 		103F215803FC837F869F670E /* WatchSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSessionManager.swift; sourceTree = "<group>"; };
 		212D4B5423960CCE366449F3 /* Health2BPMApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Health2BPMApp.swift; sourceTree = "<group>"; };
 		2715C3FECD22BBD51F53767A /* HeartRateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartRateManager.swift; sourceTree = "<group>"; };
@@ -89,6 +93,8 @@
 			isa = PBXGroup;
 			children = (
 				7482F50F407066007E6A746B /* AppState.swift */,
+				F01200000000000000000002 /* WelcomeView.swift */,
+				F01200000000000000000004 /* WelcomeAssets.xcassets */,
 				BD4558AB73DBB160A28D984E /* ContentView.swift */,
 				48D7EBF12D067DAD1C661D13 /* Health2BPM.entitlements */,
 				212D4B5423960CCE366449F3 /* Health2BPMApp.swift */,
@@ -145,6 +151,7 @@
 			buildConfigurationList = 5EEA6D8F73408A7B0E7F6A7A /* Build configuration list for PBXNativeTarget "Health2BPM" */;
 			buildPhases = (
 				AE0E94CF6ED5817C57B9E99B /* Sources */,
+				F01200000000000000000005 /* Resources */,
 				6B1B9F55B49882E2D556C2DB /* Embed Watch Content */,
 			);
 			buildRules = (
@@ -198,6 +205,15 @@
 		};
 /* End PBXProject section */
 
+/* Begin PBXResourcesBuildPhase section */
+		F01200000000000000000005 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (F01200000000000000000003 /* WelcomeAssets.xcassets in Resources */,);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		0EE0B79D5A11CFAB0FEFE73C /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -216,6 +232,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BC5A7DC95FEE33C5526DFDC8 /* AppState.swift in Sources */,
+				F01200000000000000000001 /* WelcomeView.swift in Sources */,
 				AEDB9954C4005481F474EE94 /* ContentView.swift in Sources */,
 				349AFE5227495916846BCC53 /* Health2BPMApp.swift in Sources */,
 				AD00E9BAFE22DACABB855CA4 /* Models.swift in Sources */,
@@ -394,7 +411,6 @@
 		D694B57EB64D16B56F8AB33E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = iOS/Health2BPM.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
@@ -414,7 +430,6 @@
 		D94EA4454FA09962EC6B473F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = iOS/Health2BPM.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
