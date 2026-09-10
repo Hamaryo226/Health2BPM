@@ -6,7 +6,7 @@ struct Health2BPMApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            WelcomeRootView()
                 .environmentObject(appState)
                 .onOpenURL { url in
                     appState.handleSpotifyCallback(url)
